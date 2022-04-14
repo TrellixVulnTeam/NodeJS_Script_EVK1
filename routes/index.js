@@ -71,7 +71,7 @@ router.get('/feedback', async (req, res, next) => {
 })
 
 const registerData = async (mobile) => {
-  return axios.post(`http://97.74.85.82/bhopal-first/postPolls`, {
+  return axios.post(`http://97.74.85.82/bhopal-first/register`, {
     mobile: mobile
   })
     .then((response) => {
