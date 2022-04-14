@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/register', async (req, res, next) => {
-  const file = `${__dirname}/../public/file.xlsx`;
+  const file = `${__dirname}/../public/register.xlsx`;
 
   try {
     if (!fs.existsSync(file)) return next(createError({ message: 'File not found' }))
@@ -32,7 +32,7 @@ router.get('/register', async (req, res, next) => {
     newSheet.push([x, data[0], response])
 
     let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
-    fs.writeFileSync(`${__dirname}/../public/registration.xlsx`, buffer);
+    fs.writeFileSync(`${__dirname}/../public/complete_registration.xlsx`, buffer);
 
     console.log(x);
   }
@@ -70,7 +70,7 @@ router.get('/feedback', async (req, res, next) => {
   res.status(200).json({})
 })
 
-const registerData = async (mobile, age) => {
+const registerData = async (mobile) => {
   return axios.post(`http://97.74.85.82/bhopal-first/postPolls`, {
     mobile: mobile
   })
