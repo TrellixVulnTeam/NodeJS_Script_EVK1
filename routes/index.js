@@ -59,7 +59,7 @@ router.get('/feedback', async (req, res, next) => {
     const age = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
 
     var response = await feedbackData(data[0], age);
-    newSheet.push([x, data[0], response])
+    newSheet.push([x, data[0], age, response])
 
     let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
     fs.writeFileSync(`${__dirname}/../public/feedback_complete.xlsx`, buffer);
