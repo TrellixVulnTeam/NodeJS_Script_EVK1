@@ -35,6 +35,10 @@ const submitFeedback = async (req, res, next) => {
     fs.writeFileSync(`${__dirname}/../public/complete_feedback_${id}.xlsx`, buffer);
 
     myConsole.log(x);
+
+    if (x == sheetData.length - 1) {
+      console.log('Feedback Completed!');
+    }
   }
 
   res.status(200).json({})
@@ -69,6 +73,10 @@ const submitRegister = async (req, res, next) => {
     fs.writeFileSync(`${__dirname}/../public/complete_registration_${id}.xlsx`, buffer);
 
     myConsole.log(x);
+
+    if (x == sheetData.length - 1) {
+      console.log('Registration Completed!');
+    }
   }
 
   res.status(200).json({})
