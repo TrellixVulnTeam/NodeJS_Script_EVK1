@@ -4,48 +4,14 @@ var router = express.Router();
 const fs = require('fs')
 const XLSX = require('node-xlsx');
 const axios = require('axios').default;
-const Controller = require('../controller/Controller')
 
-const myConsole = new console.Console(fs.createWriteStream(`${__dirname}/../public/log.txt`));
+const submitFeedback = async (req, res, next) => {
+  const id = req.params.id;
+  const file = `${__dirname}/../public/feedback${id}.xlsx`;
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/feedback2/:id', Controller.submitFeedback)
-
-router.get('/register', async (req, res, next) => {
-  const file = `${__dirname}/../public/register.xlsx`;
-
-  try {
-    if (!fs.existsSync(file)) return next(createError({ message: 'File not found' }))
-  } catch (err) {
-    console.error(err)
-  }
-
-  const sheet = XLSX.parse(fs.readFileSync(file));
-
-  const sheetData = sheet[0].data;
-  const newSheet = [['S.No.', 'Mobile Number', 'Status']]
-
-  for (var x = 0; x < sheetData.length; x++) {
-    const data = sheetData[x];
-
-    var response = await registerData(data[0]);
-    newSheet.push([x, data[0], response])
-
-    let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
-    fs.writeFileSync(`${__dirname}/../public/complete_registration.xlsx`, buffer);
-
-    myConsole.log(x);
-  }
-
-  res.status(200).json({})
-})
-
-router.get('/feedback', async (req, res, next) => {
-  const file = `${__dirname}/../public/feedback.xlsx`;
+  // Logs
+  const log_path = `${__dirname}/../public/log_feedback_${id}_${Date.now()}.txt`;
+  const myConsole = new console.Console(fs.createWriteStream(log_path));
 
   try {
     if (!fs.existsSync(file)) return next(createError({ message: 'File not found' }))
@@ -66,14 +32,19 @@ router.get('/feedback', async (req, res, next) => {
     newSheet.push([x, data[0], age, response])
 
     let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
-    fs.writeFileSync(`${__dirname}/../public/feedback_complete.xlsx`, buffer);
+    fs.writeFileSync(`${__dirname}/../public/complete_feedback_${id}.xlsx`, buffer);
 
     myConsole.log(x);
   }
 
   res.status(200).json({})
-})
+}
 
+/**
+ * 
+ * @param {mobile} mobile 
+ * @returns 
+ */
 const registerData = async (mobile) => {
   return axios.post(`http://97.74.85.82/bhopal-first/register`, {
     mobile: mobile
@@ -105,4 +76,6 @@ const feedbackData = async (mobile, age) => {
     });
 }
 
-module.exports = router;
+module.exports = {
+  submitFeedback: submitFeedback
+}
