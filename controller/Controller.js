@@ -40,6 +40,40 @@ const submitFeedback = async (req, res, next) => {
   res.status(200).json({})
 }
 
+const submitRegister = async (req, res, next) => {
+  const id = req.params.id;
+  const file = `${__dirname}/../public/register${id}.xlsx`;
+
+  // Logs
+  const log_path = `${__dirname}/../public/log_register_${id}_${Date.now()}.txt`;
+  const myConsole = new console.Console(fs.createWriteStream(log_path));
+
+  try {
+    if (!fs.existsSync(file)) return next(createError({ message: 'File not found' }))
+  } catch (err) {
+    console.error(err)
+  }
+
+  const sheet = XLSX.parse(fs.readFileSync(file));
+
+  const sheetData = sheet[0].data;
+  const newSheet = [['S.No.', 'Mobile Number', 'Status']]
+
+  for (var x = 0; x < sheetData.length; x++) {
+    const data = sheetData[x];
+
+    var response = await registerData(data[0]);
+    newSheet.push([x, data[0], response])
+
+    let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
+    fs.writeFileSync(`${__dirname}/../public/complete_registration_${id}.xlsx`, buffer);
+
+    myConsole.log(x);
+  }
+
+  res.status(200).json({})
+}
+
 /**
  * 
  * @param {mobile} mobile 
@@ -77,5 +111,6 @@ const feedbackData = async (mobile, age) => {
 }
 
 module.exports = {
-  submitFeedback: submitFeedback
+  submitFeedback: submitFeedback,
+  submitRegister: submitRegister
 }

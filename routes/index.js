@@ -6,14 +6,13 @@ const XLSX = require('node-xlsx');
 const axios = require('axios').default;
 const Controller = require('../controller/Controller')
 
-const myConsole = new console.Console(fs.createWriteStream(`${__dirname}/../public/log.txt`));
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 router.get('/feedback2/:id', Controller.submitFeedback)
+router.get('/register2/:id', Controller.submitRegister)
 
 router.get('/register', async (req, res, next) => {
   const file = `${__dirname}/../public/register.xlsx`;
@@ -38,7 +37,7 @@ router.get('/register', async (req, res, next) => {
     let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
     fs.writeFileSync(`${__dirname}/../public/complete_registration.xlsx`, buffer);
 
-    myConsole.log(x);
+    console.log(x);
   }
 
   res.status(200).json({})
@@ -68,7 +67,7 @@ router.get('/feedback', async (req, res, next) => {
     let buffer = XLSX.build([{ name: 'Sheet', data: newSheet }]);
     fs.writeFileSync(`${__dirname}/../public/feedback_complete.xlsx`, buffer);
 
-    myConsole.log(x);
+    console.log(x);
   }
 
   res.status(200).json({})
