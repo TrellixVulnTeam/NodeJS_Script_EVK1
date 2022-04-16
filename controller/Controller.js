@@ -107,7 +107,7 @@ const submitComplaint = async (req, res, next) => {
 
   for (var x = 1; x < sheetData.length; x++) {
     const data = sheetData[x];
-    const randomFile = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+    const randomFile = Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
     const photo = `${__dirname}/../public/images/before/${randomFile}.jpg`;
 
     var response = await complaintData(data, photo);
