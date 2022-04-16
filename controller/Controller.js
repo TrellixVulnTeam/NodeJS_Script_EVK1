@@ -118,8 +118,6 @@ const submitComplaint = async (req, res, next) => {
 
     myConsole.log(`${x} | ${data[1]} | ${response.complaint.comId}`);
 
-    await timer(timer);
-
     if (x == sheetData.length - 1) {
       console.log('Complaints Completed!');
     }
