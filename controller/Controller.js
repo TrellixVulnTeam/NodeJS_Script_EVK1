@@ -87,7 +87,7 @@ const submitRegister = async (req, res, next) => {
 
 const submitComplaint = async (req, res, next) => {
   const fromId = req.query.from ?? 0;
-  const timer = req.query.from ?? 30000;
+  const interval = req.query.interval ?? 30000;
   const file = `${__dirname}/../public/complaints.xlsx`;
 
   // Logs
@@ -117,6 +117,8 @@ const submitComplaint = async (req, res, next) => {
     fs.writeFileSync(`${__dirname}/../public/complete_complaints.xlsx`, buffer);
 
     myConsole.log(`${x} | ${data[1]} | ${response.complaint.comId}`);
+
+    await timer(interval)
 
     if (x == sheetData.length - 1) {
       console.log('Complaints Completed!');
