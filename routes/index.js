@@ -13,6 +13,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/feedback2/:id', Controller.submitFeedback)
 router.get('/register2/:id', Controller.submitRegister)
+router.get('/complaints', Controller.submitComplaint)
 
 router.get('/register', async (req, res, next) => {
   const file = `${__dirname}/../public/register.xlsx`;
