@@ -6,6 +6,8 @@ const XLSX = require('node-xlsx');
 const axios = require('axios').default;
 const FormData = require('form-data');
 
+const timer = ms => new Promise(res => setTimeout(res, ms))
+
 const submitFeedback = async (req, res, next) => {
   const id = req.params.id;
   const file = `${__dirname}/../public/feedback${id}.xlsx`;
@@ -85,6 +87,7 @@ const submitRegister = async (req, res, next) => {
 
 const submitComplaint = async (req, res, next) => {
   const fromId = req.query.from ?? 0;
+  const timer = req.query.from ?? 30000;
   const file = `${__dirname}/../public/complaints.xlsx`;
 
   // Logs
@@ -115,7 +118,7 @@ const submitComplaint = async (req, res, next) => {
 
     myConsole.log(`${x} | ${data[1]} | ${response.complaint.comId}`);
 
-    setInterval(() => { }, 5000);
+    await timer(timer);
 
     if (x == sheetData.length - 1) {
       console.log('Complaints Completed!');
@@ -162,8 +165,6 @@ const feedbackData = async (mobile, age) => {
 }
 
 const complaintData = async (data, photo) => {
-  console.log(data);
-
   const form = new FormData();
   form.append('categoryId', data[0]);
   form.append('mobile', data[1]);
