@@ -209,12 +209,12 @@ const feedbackData = async (mobile, age) => {
 
 const complaintData = async (data, photo) => {
   const form = new FormData();
-  form.append('categoryId', data[0].trim());
-  form.append('mobile', data[1].trim());
+  form.append('categoryId', data[0]);
+  form.append('mobile', data[1]);
   form.append('name', data[2]);
   form.append('complaint', data[3]);
-  form.append('latitude', data[4].trim());
-  form.append('longitude', data[5].trim());
+  form.append('latitude', data[4]);
+  form.append('longitude', data[5]);
   form.append('address', data[6]);
   form.append('landmark', data[7]);
   form.append('photo', fs.createReadStream(photo));
@@ -231,10 +231,10 @@ const complaintData = async (data, photo) => {
 
 const solvedData = async (data, photo) => {
   const form = new FormData();
-  form.append('complaintId', data[0].trim());
+  form.append('complaintId', data[0]);
   form.append('remark', data[1]);
-  form.append('latitude', data[2].trim());
-  form.append('longitude', data[3].trim());
+  form.append('latitude', data[2]);
+  form.append('longitude', data[3]);
   form.append('photo', fs.createReadStream(photo));
 
   return axios.post(`http://97.74.85.82/bhopal-first/solved-complaint`, form, { headers: form.getHeaders() })
